@@ -1,4 +1,4 @@
-project "ImGui Debug View"
+project "ImGui UI"
     kind "SharedLib"
     language "C++"
     cppdialect "C++20"
@@ -19,7 +19,6 @@ project "ImGui Debug View"
 
     defines
     {
-        "GLFW_INCLUDE_NONE",
         "IMGUI_IMPL_OPENGL_ES3"
     }
 
@@ -33,9 +32,9 @@ project "ImGui Debug View"
 
     links
     {
-        "GLFW",
         "ImGui",
         "sys_info"
     }
 
     ToyboxPluginConfigs()
+    RegisterPlugin("ImGui UI")
