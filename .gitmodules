@@ -1,0 +1,6 @@
+[submodule "3rd Party/sys_info"]
+	path = 3rd Party/sys_info
+	url = https://github.com/Konfus-org/sys_info.git
+[submodule "3rd Party/ImGui"]
+	path = 3rd Party/ImGui
+	url = https://github.com/Konfus-org/ImGui.git
