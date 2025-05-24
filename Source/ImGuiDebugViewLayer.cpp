@@ -2,9 +2,9 @@
 #include <Tbx/Runtime/Input/Input.h>
 #include <Tbx/Runtime/Windowing/WindowManager.h>
 #include <Tbx/Core/Events/EventCoordinator.h>
-#include <Tbx/Core/Math/Transform.h>
 #include <Tbx/Core/Rendering/Camera.h>
 #include <Tbx/Core/TBS/World.h>
+#include <Tbx/Math/Transform.h>
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
 
@@ -23,7 +23,7 @@ namespace ImGuiDebugView
         // Setup Platform/Renderer backends
         auto* nativeWindow = std::any_cast<GLFWwindow*>(mainWindow.lock()->GetNativeHandle());
         ImGui_ImplGlfw_InitForOpenGL(nativeWindow, true);
-        ImGui_ImplOpenGL3_Init(glsl_version);
+        ImGui_ImplOpenGL3_Init("300");
 
         // Sub to frame rendered event so we know when to draw
         _frameRenderedEventId = Tbx::EventCoordinator::Subscribe<Tbx::RenderedFrameEvent>(TBX_BIND_FN(OnFrameRendered));

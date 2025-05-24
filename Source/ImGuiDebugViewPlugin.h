@@ -1,7 +1,6 @@
 #pragma once
 #include "ImGuiDebugViewLayer.h"
 #include <Tbx/Core/Plugins/RegisterPlugin.h>
-#include <Tbx/Runtime/Layers/Layer.h>
 
 namespace ImGuiDebugView
 {
@@ -14,6 +13,6 @@ namespace ImGuiDebugView
         void OnLoad() override;
         void OnUnload() override;
     };
-}
 
-TBX_REGISTER_PLUGIN(ImGuiDebugView::ImGuiDebugViewPlugin)
+    TBX_REGISTER_PLUGIN(ImGuiDebugViewPlugin)
+}

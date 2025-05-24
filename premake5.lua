@@ -1,4 +1,4 @@
-project "ImGui UI"
+project "ImGui Debug UI"
     kind "SharedLib"
     language "C++"
     cppdialect "C++20"
@@ -11,10 +11,19 @@ project "ImGui UI"
 
     files
     {
-        "./**.h",
-        "./**.c",
-        "./**.hpp",
-        "./**.cpp"
+        "./Source/**.h",
+        "./Source/**.c",
+        "./Source/**.cc",
+        "./Source/**.hpp",
+        "./Source/**.cpp",
+        "./Include/**.h",
+        "./Include/**.c",
+        "./Include/**.cc",
+        "./Include/**.hpp",
+        "./Include/**.cpp",
+        "./**.plugin",
+        "./**.md",
+        "./*.lua"
     }
 
     defines
@@ -25,9 +34,9 @@ project "ImGui UI"
     includedirs
     {
         "./Source",
-        "./3rd Party/ImGui",
-        "./3rd Party/ImGui/backends",
-        "./3rd Party/sys_info"
+        "%{Using.ImGui}",
+        "%{Using.ImGuiBackends}",
+        "%{Using.sys_info}"
     }
 
     links
@@ -37,4 +46,4 @@ project "ImGui UI"
     }
 
     ToyboxPluginConfigs()
-    RegisterPlugin("ImGui UI")
+    RegisterPlugin("ImGui Debug UI")
