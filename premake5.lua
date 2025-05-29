@@ -3,47 +3,33 @@ project "ImGui Debug UI"
     language "C++"
     cppdialect "C++20"
     staticruntime "Off"
-    ignoredefaultlibraries { "MSVCRT" }
-    externalwarnings "Off"
 
-    targetdir ("../../" .. OutputTargetPluginDir .. "")
-    objdir    ("../../" .. OutputIntermediatePluginDir .. "")
+    RegisterDynamicPlugin("ImGui Debug UI")
 
     files
     {
-        "./Source/**.h",
-        "./Source/**.c",
-        "./Source/**.cc",
-        "./Source/**.hpp",
-        "./Source/**.cpp",
-        "./Include/**.h",
-        "./Include/**.c",
-        "./Include/**.cc",
-        "./Include/**.hpp",
-        "./Include/**.cpp",
-        "./**.plugin",
+        "./**.hpp",
+        "./**.cpp",
+        "./**.h",
+        "./**.c",
         "./**.md",
-        "./*.lua"
+        "./**.lua",
+        "./**.txt",
+        "./**.plugin"
     }
-
-    defines
-    {
-        "IMGUI_IMPL_OPENGL_ES3"
-    }
-
     includedirs
     {
         "./Source",
-        "%{Using.ImGui}",
-        "%{Using.ImGuiBackends}",
-        "%{Using.sys_info}"
+        _MAIN_SCRIPT_DIR .. "/Dependencies/ImGui",
+        _MAIN_SCRIPT_DIR .. "/Dependencies/ImGui/backends",
+        _MAIN_SCRIPT_DIR .. "/Dependencies/sys_info/core/include"
     }
-
     links
     {
         "ImGui",
         "sys_info"
     }
-
-    ToyboxPluginConfigs()
-    RegisterPlugin("ImGui Debug UI")
+    defines
+    {
+        "IMGUI_IMPL_OPENGL_ES3"
+    }
