@@ -4,8 +4,6 @@ project "ImGui Debug UI"
     cppdialect "C++20"
     staticruntime "Off"
 
-    RegisterDynamicPlugin("ImGui Debug UI")
-
     files
     {
         "./**.hpp",
@@ -13,23 +11,27 @@ project "ImGui Debug UI"
         "./**.h",
         "./**.c",
         "./**.md",
-        "./**.lua",
-        "./**.txt",
         "./**.plugin"
     }
     includedirs
     {
         "./Source",
+
+        -- ImGui includes
         _MAIN_SCRIPT_DIR .. "/Dependencies/ImGui",
         _MAIN_SCRIPT_DIR .. "/Dependencies/ImGui/backends",
-        _MAIN_SCRIPT_DIR .. "/Dependencies/sys_info/core/include"
+
+        -- sys_info includes
+        _MAIN_SCRIPT_DIR .. "/Dependencies/sys_info/core/include",
+
+        -- SDL includes
+        _MAIN_SCRIPT_DIR .. "/Dependencies/SDL3/include"
     }
     links
     {
         "ImGui",
-        "sys_info"
+        "sys_info",
+        "SDL3"
     }
-    defines
-    {
-        "IMGUI_IMPL_OPENGL_ES3"
-    }
+
+    RegisterDynamicPlugin("ImGui Debug UI")

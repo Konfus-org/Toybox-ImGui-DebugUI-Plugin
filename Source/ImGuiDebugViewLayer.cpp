@@ -1,42 +1,43 @@
 #include "ImGuiDebugViewLayer.h"
-#include <Tbx/Runtime/Input/Input.h>
-#include <Tbx/Runtime/Windowing/WindowManager.h>
-#include <Tbx/Core/Events/EventCoordinator.h>
-#include <Tbx/Core/Rendering/Camera.h>
-#include <Tbx/Core/TBS/World.h>
+#include <Tbx/Application/App/App.h>
+#include <Tbx/Systems/Input/Input.h>
+#include <Tbx/Systems/Rendering/Rendering.h>
+#include <Tbx/Systems/Windowing/WindowManager.h>
+#include <Tbx/Systems/Events/EventCoordinator.h>
+#include <Tbx/Systems/TBS/World.h>
+#include <Tbx/Graphics/Camera.h>
 #include <Tbx/Math/Transform.h>
-#include <imgui_impl_opengl3.h>
-#include <imgui_impl_glfw.h>
+#include <imgui.h>
 
 namespace ImGuiDebugView
 {
     void ImGuiDebugViewLayer::OnAttach()
     {
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO& io = ImGui::GetIO();
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // optional
+
         // Setup Dear ImGui style
         ImGui::StyleColorsDark();
         //ImGui::StyleColorsLight();
-
+        
         // Init size
         const auto mainWindow = Tbx::WindowManager::GetMainWindow();
-        _windowResolution = mainWindow.lock()->GetSize();
+        _windowResolution = mainWindow->GetSize();
 
         // Setup Platform/Renderer backends
-        auto* nativeWindow = std::any_cast<GLFWwindow*>(mainWindow.lock()->GetNativeHandle());
-        ImGui_ImplGlfw_InitForOpenGL(nativeWindow, true);
-        ImGui_ImplOpenGL3_Init("300");
+        //auto* nativeWindow = static_cast<GLFWwindow*>(mainWindow->GetNativeWindow());
 
         // Sub to frame rendered event so we know when to draw
-        _frameRenderedEventId = Tbx::EventCoordinator::Subscribe<Tbx::RenderedFrameEvent>(TBX_BIND_FN(OnFrameRendered));
         _windowResizedEventId = Tbx::EventCoordinator::Subscribe<Tbx::WindowResizedEvent>(TBX_BIND_FN(OnWindowResized));
     }
 
     void ImGuiDebugViewLayer::OnDetach()
     {
-        Tbx::EventCoordinator::Unsubscribe<Tbx::RenderedFrameEvent>(_frameRenderedEventId);
         Tbx::EventCoordinator::Unsubscribe<Tbx::WindowResizedEvent>(_windowResizedEventId);
 
-        ImGui_ImplOpenGL3_Shutdown();
-        ImGui_ImplGlfw_Shutdown();
+        ImGui::DestroyContext();
     }
 
     void ImGuiDebugViewLayer::OnUpdate()
@@ -51,20 +52,22 @@ namespace ImGuiDebugView
         const ImGuiIO& io = ImGui::GetIO();
 
         // Start the Dear ImGui frame
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
+        {
+            ImGui::NewFrame();
+        }
 
         // Listen for key press to toggle the debug window
-        if (Tbx::Input::IsKeyDown(TBX_KEY_F1))
         {
-            _showDebugWindowOnDebugBtnUp = true;
-        }
-        if (_showDebugWindowOnDebugBtnUp && 
-            Tbx::Input::IsKeyUp(TBX_KEY_F1))
-        {
-            _showDebugWindowOnDebugBtnUp = false;
-            _isDebugWindowOpen = !_isDebugWindowOpen;
+            if (Tbx::Input::IsKeyDown(TBX_KEY_F1))
+            {
+                _showDebugWindowOnDebugBtnUp = true;
+            }
+            if (_showDebugWindowOnDebugBtnUp &&
+                Tbx::Input::IsKeyUp(TBX_KEY_F1))
+            {
+                _showDebugWindowOnDebugBtnUp = false;
+                _isDebugWindowOpen = !_isDebugWindowOpen;
+            }
         }
 
         // Show debug window
@@ -90,8 +93,22 @@ namespace ImGuiDebugView
 
             if (ImGui::CollapsingHeader("Rendering"), ImGuiTreeNodeFlags_DefaultOpen)
             {
+                auto api = Tbx::App::GetInstance()->GetGraphicsSettings().Api;
+                switch (api)
+                {
+                    case Tbx::GraphicsApi::DirectX12:
+                        ImGui::Text("API: DX12");
+                        break;
+                    case Tbx::GraphicsApi::Vulkan:
+                        ImGui::Text("API: Vulkan");
+                        break;
+                    case Tbx::GraphicsApi::Metal:
+                        ImGui::Text("API: Metal");
+                        break;
+                }
+
                 int cameraNumber = 0;
-                auto playSpaces = Tbx::World::GetPlaySpaces();
+                auto playSpaces = Tbx::World::GetPlayspaces();
                 for (auto playSpace : playSpaces)
                 {
                     for (auto camera : Tbx::PlayspaceView<Tbx::Camera>(playSpace))
@@ -114,24 +131,15 @@ namespace ImGuiDebugView
             ImGui::End();
         }
 
-        // Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-        //ImGui::ShowDemoWindow(&_showDemoWindow);
-
         // Finally, render
-        ImGui::Render();
+        {
+            ImGui::Render();
+        }
     }
 
     bool ImGuiDebugViewLayer::IsOverlay()
     {
         return true;
-    }
-
-    void ImGuiDebugViewLayer::OnFrameRendered(const Tbx::RenderedFrameEvent&) const
-    {
-        if (ImGui::GetDrawData() == nullptr) return;
-
-        // This needs to be called after the frame has been rendered by the TBX renderer
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     }
 
     void ImGuiDebugViewLayer::OnWindowResized(const Tbx::WindowResizedEvent& e)
