@@ -1,17 +1,20 @@
 #pragma once
-#include <Tbx/Application/Layers/Layer.h>
-#include <Tbx/Systems/Rendering/RenderEvents.h>
-#include <Tbx/Systems/Windowing/WindowEvents.h>
-#include <Tbx/Utils/Ids/UID.h>
+#include <Tbx/Plugin API/RegisterPlugin.h>
+#include <Tbx/Layers/Layer.h>
+#include <Tbx/Events/WindowEvents.h>
+#include <Tbx/Ids/UID.h>
 #include <sys_info/ProcessInfo.h>
 #include <sys_info/SystemInformation.h>
 
 namespace ImGuiDebugView
 {
-    class ImGuiDebugViewLayer : public Tbx::Layer
+    class ImGuiDebugViewLayer : public Tbx::ILayerPlugin
     {
     public:
-        ImGuiDebugViewLayer() : Layer("ImGui") {}
+        ImGuiDebugViewLayer() : ILayerPlugin("ImGui") {}
+
+        void OnLoad() override;
+        void OnUnload() override;
 
         void OnAttach() override;
         void OnDetach() override;
@@ -31,4 +34,6 @@ namespace ImGuiDebugView
         bool _showDebugWindowOnDebugBtnUp = false;
         bool _isDebugWindowOpen = false;
     };
+
+    TBX_REGISTER_PLUGIN(ImGuiDebugViewLayer);
 }

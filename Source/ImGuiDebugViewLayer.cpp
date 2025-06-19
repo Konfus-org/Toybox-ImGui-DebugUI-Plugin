@@ -1,16 +1,30 @@
 #include "ImGuiDebugViewLayer.h"
-#include <Tbx/Application/App/App.h>
-#include <Tbx/Systems/Input/Input.h>
-#include <Tbx/Systems/Rendering/Rendering.h>
-#include <Tbx/Systems/Windowing/WindowManager.h>
-#include <Tbx/Systems/Events/EventCoordinator.h>
-#include <Tbx/Systems/TBS/World.h>
+#include <Tbx/App/App.h>
+#include <Tbx/Input/Input.h>
+#include <Tbx/Windowing/WindowManager.h>
+#include <Tbx/Events/EventCoordinator.h>
+#include <Tbx/TBS/World.h>
 #include <Tbx/Graphics/Camera.h>
 #include <Tbx/Math/Transform.h>
 #include <imgui.h>
 
 namespace ImGuiDebugView
 {
+    void ImGuiDebugViewLayer::OnLoad()
+    {
+        // Setup Dear ImGui context
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO& io = ImGui::GetIO();
+        io.ConfigFlags = io.ConfigFlags | ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+        io.ConfigFlags = io.ConfigFlags | ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    }
+
+    void ImGuiDebugViewLayer::OnUnload()
+    {
+        ImGui::DestroyContext();
+    }
+
     void ImGuiDebugViewLayer::OnAttach()
     {
         IMGUI_CHECKVERSION();

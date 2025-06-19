@@ -1,7 +1,7 @@
 {
     "name": "ImGui Debug UI",
     "lib": "ImGui Debug UI.dll",
-    "priority": "2147483647",
+    "priority": "0",
     "language": "C++",
     "version": "0.0.1",
     "author": "Konfus-dev",
