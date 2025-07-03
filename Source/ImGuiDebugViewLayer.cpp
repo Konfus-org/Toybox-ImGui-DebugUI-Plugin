@@ -1,12 +1,13 @@
 #include "ImGuiDebugViewLayer.h"
 #include <Tbx/App/App.h>
 #include <Tbx/Input/Input.h>
-#include <Tbx/Windowing/WindowManager.h>
 #include <Tbx/Events/EventCoordinator.h>
 #include <Tbx/TBS/World.h>
 #include <Tbx/Graphics/Camera.h>
 #include <Tbx/Math/Transform.h>
 #include <imgui.h>
+#include <imgui_impl_sdl3.h>
+#include <imgui_impl_sdlgpu3.h>
 
 namespace ImGuiDebugView
 {
@@ -37,11 +38,13 @@ namespace ImGuiDebugView
         //ImGui::StyleColorsLight();
         
         // Init size
-        const auto mainWindow = Tbx::WindowManager::GetMainWindow();
-        _windowResolution = mainWindow->GetSize();
+        /*const auto mainWindow = Tbx::WindowManager::GetMainWindow();
+        _windowResolution = mainWindow->GetSize();*/
 
         // Setup Platform/Renderer backends
         //auto* nativeWindow = static_cast<GLFWwindow*>(mainWindow->GetNativeWindow());
+
+        //ImGui_ImplSDL3_InitForSDLRenderer((SDL_Window*)mainWindow->GetNativeWindow(), renderer);;
 
         // Sub to frame rendered event so we know when to draw
         _windowResizedEventId = Tbx::EventCoordinator::Subscribe<Tbx::WindowResizedEvent>(TBX_BIND_FN(OnWindowResized));
