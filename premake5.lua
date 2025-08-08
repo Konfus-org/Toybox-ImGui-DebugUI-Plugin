@@ -25,7 +25,7 @@ project "ImGui Debug UI"
         _MAIN_SCRIPT_DIR .. "/Dependencies/sys_info/core/include",
 
         -- SDL includes
-        _MAIN_SCRIPT_DIR .. "/Dependencies/SDL3/include"
+        _MAIN_SCRIPT_DIR .. "/Dependencies/SDL/include"
     }
     links
     {

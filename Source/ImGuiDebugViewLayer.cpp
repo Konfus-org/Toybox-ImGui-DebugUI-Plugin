@@ -15,26 +15,26 @@ namespace ImGuiDebugView
     {
         // Setup Dear ImGui context
         IMGUI_CHECKVERSION();
-        ImGui::CreateContext();
-        ImGuiIO& io = ImGui::GetIO();
-        io.ConfigFlags = io.ConfigFlags | ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-        io.ConfigFlags = io.ConfigFlags | ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+        //ImGui::CreateContext();
+        //ImGuiIO& io = ImGui::GetIO();
+        //io.ConfigFlags = io.ConfigFlags | ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+        //io.ConfigFlags = io.ConfigFlags | ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     }
 
     void ImGuiDebugViewLayer::OnUnload()
     {
-        ImGui::DestroyContext();
+        //ImGui::DestroyContext();
     }
 
     void ImGuiDebugViewLayer::OnAttach()
     {
-        IMGUI_CHECKVERSION();
-        ImGui::CreateContext();
-        ImGuiIO& io = ImGui::GetIO();
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // optional
+        //IMGUI_CHECKVERSION();
+        //ImGui::CreateContext();
+        //ImGuiIO& io = ImGui::GetIO();
+        //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // optional
 
         // Setup Dear ImGui style
-        ImGui::StyleColorsDark();
+        //ImGui::StyleColorsDark();
         //ImGui::StyleColorsLight();
         
         // Init size
@@ -52,9 +52,9 @@ namespace ImGuiDebugView
 
     void ImGuiDebugViewLayer::OnDetach()
     {
-        Tbx::EventCoordinator::Unsubscribe<Tbx::WindowResizedEvent>(_windowResizedEventId);
+        /*Tbx::EventCoordinator::Unsubscribe<Tbx::WindowResizedEvent>(_windowResizedEventId);
 
-        ImGui::DestroyContext();
+        ImGui::DestroyContext();*/
     }
 
     void ImGuiDebugViewLayer::OnUpdate()
@@ -66,7 +66,7 @@ namespace ImGuiDebugView
         auto cpuSysUsage = _systemInfo.GetCpuTotalUsage();
 
         // Get io from last frame
-        const ImGuiIO& io = ImGui::GetIO();
+        //const ImGuiIO& io = ImGui::GetIO();
 
         // Start the Dear ImGui frame
         //{
