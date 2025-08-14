@@ -24,7 +24,7 @@ namespace ImGuiDebugView
     private:
         void OnWindowResized(const Tbx::WindowResizedEvent& e);
 
-        Tbx::UID _windowResizedEventId = -1;
+        Tbx::Uid _windowResizedEventId = Tbx::Invalid::Uid;
 
         Tbx::Size _windowResolution = { 0, 0 };
 
