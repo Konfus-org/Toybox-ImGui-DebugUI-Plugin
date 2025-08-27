@@ -34,7 +34,6 @@ namespace ImGuiDebugView
         ProcessInfo _processInfo = {};
         SystemInformation _systemInfo = {};
 
-        bool _showDebugWindowOnDebugBtnUp = false;
         bool _isDebugWindowOpen = false;
     };
 

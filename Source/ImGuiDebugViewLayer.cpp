@@ -12,14 +12,18 @@
 
 namespace ImGuiDebugView
 {
+    static bool OnSDLEvent(void*, SDL_Event* event)
+    {
+        ImGui_ImplSDL3_ProcessEvent(event); // forwards to ImGui, does NOT consume
+        return false;
+    }
+
     void ImGuiDebugViewLayer::OnLoad()
     {
         // Setup Dear ImGui context
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         ImGuiIO& io = ImGui::GetIO();
-        io.ConfigFlags = io.ConfigFlags | ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-        io.ConfigFlags = io.ConfigFlags | ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     }
 
     void ImGuiDebugViewLayer::OnUnload()
@@ -29,11 +33,6 @@ namespace ImGuiDebugView
 
     void ImGuiDebugViewLayer::OnAttach()
     {
-        IMGUI_CHECKVERSION();
-        ImGui::CreateContext();
-        ImGuiIO& io = ImGui::GetIO();
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // optional
-
         // Setup Dear ImGui style
         ImGui::StyleColorsDark();
         //ImGui::StyleColorsLight();
@@ -60,12 +59,13 @@ namespace ImGuiDebugView
             return;
         }
 
-        ImGui_ImplOpenGL3_Init("#version 300 es");
         ImGui_ImplSDL3_InitForOpenGL(nativeWindow, glContext);
+        ImGui_ImplOpenGL3_Init();
 
         // Sub to events
         _frameRenderedEventId = Tbx::EventCoordinator::Subscribe<Tbx::RenderedFrameEvent>(TBX_BIND_FN(OnFrameRendered));
         _windowResizedEventId = Tbx::EventCoordinator::Subscribe<Tbx::WindowResizedEvent>(TBX_BIND_FN(OnWindowResized));
+        SDL_AddEventWatch(OnSDLEvent, nullptr);
     }
 
     void ImGuiDebugViewLayer::OnDetach()
@@ -73,8 +73,8 @@ namespace ImGuiDebugView
         Tbx::EventCoordinator::Unsubscribe<Tbx::RenderedFrameEvent>(_frameRenderedEventId);
         Tbx::EventCoordinator::Unsubscribe<Tbx::WindowResizedEvent>(_windowResizedEventId);
         
-        ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplSDL3_Shutdown();
+        ImGui_ImplOpenGL3_Shutdown();
     }
 
     void ImGuiDebugViewLayer::OnUpdate()
@@ -94,14 +94,8 @@ namespace ImGuiDebugView
         ImGui::NewFrame();
 
         // Listen for key press to toggle the debug window
-        if (Tbx::Input::IsKeyDown(TBX_KEY_F1))
+        if (Tbx::Input::IsKeyUp(TBX_KEY_F1))
         {
-            _showDebugWindowOnDebugBtnUp = true;
-        }
-        if (_showDebugWindowOnDebugBtnUp &&
-            Tbx::Input::IsKeyUp(TBX_KEY_F1))
-        {
-            _showDebugWindowOnDebugBtnUp = false;
             _isDebugWindowOpen = !_isDebugWindowOpen;
         }
 
@@ -126,7 +120,7 @@ namespace ImGuiDebugView
                 ImGui::Text("Aspect Ratio: (%.1f)", _windowResolution.GetAspectRatio());
             }
 
-            if (ImGui::CollapsingHeader("Rendering"), ImGuiTreeNodeFlags_DefaultOpen)
+            if (ImGui::CollapsingHeader("Rendering", ImGuiTreeNodeFlags_DefaultOpen))
             {
                 auto api = Tbx::App::GetInstance()->GetGraphicsSettings().Api;
                 switch (api)
@@ -178,8 +172,6 @@ namespace ImGuiDebugView
     void ImGuiDebugViewLayer::OnFrameRendered(const Tbx::RenderedFrameEvent&) const
     {
         if (ImGui::GetDrawData() == nullptr) return;
-
-        // This needs to be called after the frame has been rendered by the TBX renderer
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     }
 
