@@ -1,7 +1,13 @@
 {
     "name": "ImGui Debug UI",
     "lib": "ImGui Debug UI.dll",
-    "priority": "0",
+    "dependencies": [
+        "SDL3 Windowing",
+        "OpenGL Rendering"
+    ],
+    "type": [
+        "Debug UI"
+    ],
     "language": "C++",
     "version": "0.0.1",
     "author": "Konfus-dev",
