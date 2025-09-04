@@ -4,8 +4,8 @@
 #include <Tbx/Events/WindowEvents.h>
 #include <Tbx/Events/RenderEvents.h>
 #include <Tbx/Ids/UID.h>
-#include <sys_info/ProcessInfo.h>
-#include <sys_info/SystemInformation.h>
+#include <ProcessInfo.h>
+#include <SystemInformation.h>
 
 namespace ImGuiDebugView
 {

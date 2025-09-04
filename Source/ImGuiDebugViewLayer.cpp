@@ -114,17 +114,13 @@ namespace ImGuiDebugView
                 ImGui::Text("System Memory Usage: %.1f MB", static_cast<float>(memUsage) / 1024.0f / 1024.0f);
             }
 
-            if (ImGui::CollapsingHeader("Display", ImGuiTreeNodeFlags_DefaultOpen))
-            {
-                ImGui::Text("Resolution: (%d, %d)", _windowResolution.Width, _windowResolution.Height);
-                ImGui::Text("Aspect Ratio: (%.1f)", _windowResolution.GetAspectRatio());
-            }
-
             if (ImGui::CollapsingHeader("Rendering", ImGuiTreeNodeFlags_DefaultOpen))
             {
-                auto api = Tbx::App::GetInstance()->GetGraphicsSettings().Api;
-                switch (api)
+                if (ImGui::CollapsingHeader("API", ImGuiTreeNodeFlags_DefaultOpen))
                 {
+                    auto api = Tbx::App::GetInstance()->GetGraphicsSettings().Api;
+                    switch (api)
+                    {
                     case Tbx::GraphicsApi::None:
                         ImGui::Text("API: None");
                         break;
@@ -134,20 +130,13 @@ namespace ImGuiDebugView
                     default:
                         ImGui::Text("API: Uknown");
                         break;
+                    }
                 }
 
-                int cameraNumber = 0;
-                auto boxes = Tbx::World::GetBoxes();
-                for (auto box : boxes)
+                if (ImGui::CollapsingHeader("Display", ImGuiTreeNodeFlags_DefaultOpen))
                 {
-                    for (auto camera : Tbx::BoxView<Tbx::Camera>(box))
-                    {
-                        auto& camTrans = box->GetBlockOn<Tbx::Transform>(camera);
-                        ImGui::Text("Camera %d Position: %s", cameraNumber, camTrans.Position.ToString().c_str());
-                        ImGui::Text("Camera %d Rotation: %s", cameraNumber, Tbx::Quaternion::ToEuler(camTrans.Rotation).ToString().c_str());
-                        ImGui::Text("Camera %d Scale: %s", cameraNumber, camTrans.Scale.ToString().c_str());
-                        cameraNumber++;
-                    }
+                    ImGui::Text("Resolution: (%d, %d)", _windowResolution.Width, _windowResolution.Height);
+                    ImGui::Text("Aspect Ratio: (%.1f)", _windowResolution.GetAspectRatio());
                 }
             }
 
@@ -155,6 +144,29 @@ namespace ImGuiDebugView
             {
                 ImGui::Text("Mouse Position: (%.1f, %.1f)", io.MousePos.x, io.MousePos.y);
                 ImGui::Text("Mouse Delta: (%.1f, %.1f)", io.MouseDelta.x, io.MouseDelta.y);
+                ImGui::Text("Mouse Down: %d", io.MouseDown[0]);
+                ImGui::Text("Mouse Wheel: %.1f", io.MouseWheel);
+            }
+
+            if (ImGui::CollapsingHeader("World", ImGuiTreeNodeFlags_DefaultOpen))
+            {
+                ImGui::Text("# Boxes In World: %d", Tbx::World::GetBoxCount());
+
+                for (const auto& box : Tbx::World::GetBoxes())
+                {
+                    auto boxName = "Box" + std::to_string(box->GetId());
+                    if (ImGui::CollapsingHeader(boxName.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+                    {
+                        ImGui::Text("# Toys In Box: %d", box->GetToyCount());
+                        for (const auto& toy : Tbx::BoxView(box))
+                        {
+                            if (ImGui::CollapsingHeader(toy.GetName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+                            {
+                                ImGui::Text("# Blocks On Toy: ??? (TODO)");
+                            }
+                        }
+                    }
+                }
             }
 
             ImGui::End();

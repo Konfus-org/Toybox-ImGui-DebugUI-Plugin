@@ -1,6 +1,6 @@
 {
     "name": "ImGui Debug UI",
-    "lib": "ImGui Debug UI.dll",
+    "lib": "ImGuiDebugUI.dll",
     "dependencies": [
         "SDL3 Windowing",
         "OpenGL Rendering"
