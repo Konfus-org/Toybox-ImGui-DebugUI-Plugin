@@ -19,15 +19,10 @@ target_include_directories(ImGuiDebugUI
 # C++20
 set_target_properties(ImGuiDebugUI PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED YES CXX_EXTENSIONS NO)
 
-# Link libs
-if(NOT TARGET sys_core)
-  message(FATAL_ERROR "sys_info target not found. Add it before ImGuiDebugUI.")
-endif()
-
+# Links
 target_link_libraries(ImGuiDebugUI PUBLIC
   Tbx::Engine
   imgui
-  sys_core
   SDL3-shared
 )
 

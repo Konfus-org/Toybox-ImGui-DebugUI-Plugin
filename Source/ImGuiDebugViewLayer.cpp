@@ -79,11 +79,11 @@ namespace ImGuiDebugView
 
     void ImGuiDebugViewLayer::OnUpdate()
     {
-        auto memory = _processInfo.GetMemoryUsage();
+        /*auto memory = _processInfo.GetMemoryUsage();
         auto maxMemory = _systemInfo.GetTotalMemory();
         auto memUsage = _systemInfo.GetTotalUsageMemory();
         auto cpuUsage = _processInfo.GetCpuUsage();
-        auto cpuSysUsage = _systemInfo.GetCpuTotalUsage();
+        auto cpuSysUsage = _systemInfo.GetCpuTotalUsage();*/
 
         // Get io from last frame
         const ImGuiIO& io = ImGui::GetIO();
@@ -107,11 +107,11 @@ namespace ImGuiDebugView
             if (ImGui::CollapsingHeader("Performance", ImGuiTreeNodeFlags_DefaultOpen))
             {
                 ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-                ImGui::Text("CPU Usage: %.1f%%", cpuUsage);
+                /*ImGui::Text("CPU Usage: %.1f%%", cpuUsage);
                 ImGui::Text("System CPU Usage: %.1f%%", cpuSysUsage);
                 ImGui::Text("Memory Usage (Available): %.1f%%", static_cast<float>(memory) / maxMemory * 100.0f);
                 ImGui::Text("Memory Usage (In MB): %.1f MB", static_cast<float>(memory) / 1024.0f / 1024.0f);
-                ImGui::Text("System Memory Usage: %.1f MB", static_cast<float>(memUsage) / 1024.0f / 1024.0f);
+                ImGui::Text("System Memory Usage: %.1f MB", static_cast<float>(memUsage) / 1024.0f / 1024.0f);*/
             }
 
             if (ImGui::CollapsingHeader("Rendering", ImGuiTreeNodeFlags_DefaultOpen))

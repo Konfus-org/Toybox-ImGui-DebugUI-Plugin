@@ -4,8 +4,6 @@
 #include <Tbx/Events/WindowEvents.h>
 #include <Tbx/Events/RenderEvents.h>
 #include <Tbx/Ids/UID.h>
-#include <ProcessInfo.h>
-#include <SystemInformation.h>
 
 namespace ImGuiDebugView
 {
@@ -30,9 +28,6 @@ namespace ImGuiDebugView
         Tbx::Uid _windowResizedEventId = Tbx::Invalid::Uid;
 
         Tbx::Size _windowResolution = { 0, 0 };
-
-        ProcessInfo _processInfo = {};
-        SystemInformation _systemInfo = {};
 
         bool _isDebugWindowOpen = false;
     };
