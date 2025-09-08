@@ -121,15 +121,16 @@ namespace ImGuiDebugView
                     auto api = Tbx::App::GetInstance()->GetGraphicsSettings().Api;
                     switch (api)
                     {
-                    case Tbx::GraphicsApi::None:
-                        ImGui::Text("API: None");
-                        break;
-                    case Tbx::GraphicsApi::OpenGL:
-                        ImGui::Text("API: OpenGL");
-                        break;
-                    default:
-                        ImGui::Text("API: Uknown");
-                        break;
+                        using enum Tbx::GraphicsApi;
+                        case None:
+                            ImGui::Text("API: None");
+                            break;
+                        case OpenGL:
+                            ImGui::Text("API: OpenGL");
+                            break;
+                        default:
+                            ImGui::Text("API: Uknown");
+                            break;
                     }
                 }
 
