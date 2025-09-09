@@ -63,15 +63,15 @@ namespace ImGuiDebugView
         ImGui_ImplOpenGL3_Init();
 
         // Sub to events
-        _frameRenderedEventId = Tbx::EventCoordinator::Subscribe<Tbx::RenderedFrameEvent>(TBX_BIND_FN(OnFrameRendered));
-        _windowResizedEventId = Tbx::EventCoordinator::Subscribe<Tbx::WindowResizedEvent>(TBX_BIND_FN(OnWindowResized));
+        Tbx::EventCoordinator::Subscribe(this, &ImGuiDebugViewLayer::OnFrameRendered);
+        Tbx::EventCoordinator::Subscribe(this, &ImGuiDebugViewLayer::OnWindowResized);
         SDL_AddEventWatch(OnSDLEvent, nullptr);
     }
 
     void ImGuiDebugViewLayer::OnDetach()
     {
-        Tbx::EventCoordinator::Unsubscribe<Tbx::RenderedFrameEvent>(_frameRenderedEventId);
-        Tbx::EventCoordinator::Unsubscribe<Tbx::WindowResizedEvent>(_windowResizedEventId);
+        Tbx::EventCoordinator::Unsubscribe(this, &ImGuiDebugViewLayer::OnFrameRendered);
+        Tbx::EventCoordinator::Unsubscribe(this, &ImGuiDebugViewLayer::OnWindowResized);
         
         ImGui_ImplSDL3_Shutdown();
         ImGui_ImplOpenGL3_Shutdown();
@@ -104,7 +104,7 @@ namespace ImGuiDebugView
         {
             ImGui::Begin("Tbx Debugger", &_isDebugWindowOpen);
 
-            if (ImGui::CollapsingHeader("Performance", ImGuiTreeNodeFlags_DefaultOpen))
+            if (ImGui::CollapsingHeader("Performance"))
             {
                 ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
                 /*ImGui::Text("CPU Usage: %.1f%%", cpuUsage);
@@ -114,34 +114,32 @@ namespace ImGuiDebugView
                 ImGui::Text("System Memory Usage: %.1f MB", static_cast<float>(memUsage) / 1024.0f / 1024.0f);*/
             }
 
-            if (ImGui::CollapsingHeader("Rendering", ImGuiTreeNodeFlags_DefaultOpen))
+            if (ImGui::CollapsingHeader("Rendering"))
             {
-                if (ImGui::CollapsingHeader("API", ImGuiTreeNodeFlags_DefaultOpen))
+                auto api = Tbx::App::GetInstance()->GetGraphicsSettings().Api;
+                switch (api)
                 {
-                    auto api = Tbx::App::GetInstance()->GetGraphicsSettings().Api;
-                    switch (api)
-                    {
-                        using enum Tbx::GraphicsApi;
-                        case None:
-                            ImGui::Text("API: None");
-                            break;
-                        case OpenGL:
-                            ImGui::Text("API: OpenGL");
-                            break;
-                        default:
-                            ImGui::Text("API: Uknown");
-                            break;
-                    }
+                    using enum Tbx::GraphicsApi;
+                    case None:
+                        ImGui::Text("API: None");
+                        break;
+                    case OpenGL:
+                        ImGui::Text("API: OpenGL");
+                        break;
+                    default:
+                        ImGui::Text("API: Uknown");
+                        break;
                 }
 
-                if (ImGui::CollapsingHeader("Display", ImGuiTreeNodeFlags_DefaultOpen))
+                if (ImGui::TreeNodeEx("Display"))
                 {
                     ImGui::Text("Resolution: (%d, %d)", _windowResolution.Width, _windowResolution.Height);
                     ImGui::Text("Aspect Ratio: (%.1f)", _windowResolution.GetAspectRatio());
+                    ImGui::TreePop();
                 }
             }
 
-            if (ImGui::CollapsingHeader("Input", ImGuiTreeNodeFlags_DefaultOpen))
+            if (ImGui::CollapsingHeader("Input"))
             {
                 ImGui::Text("Mouse Position: (%.1f, %.1f)", io.MousePos.x, io.MousePos.y);
                 ImGui::Text("Mouse Delta: (%.1f, %.1f)", io.MouseDelta.x, io.MouseDelta.y);
@@ -149,23 +147,28 @@ namespace ImGuiDebugView
                 ImGui::Text("Mouse Wheel: %.1f", io.MouseWheel);
             }
 
-            if (ImGui::CollapsingHeader("World", ImGuiTreeNodeFlags_DefaultOpen))
+            if (ImGui::CollapsingHeader("World"))
             {
-                ImGui::Text("# Boxes In World: %d", Tbx::World::GetBoxCount());
+                ImGui::Text(" Boxes (%d):", Tbx::World::GetBoxCount());
 
                 for (const auto& box : Tbx::World::GetBoxes())
                 {
                     auto boxName = "Box" + std::to_string(box->GetId());
-                    if (ImGui::CollapsingHeader(boxName.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+
+                    if (ImGui::TreeNode(boxName.c_str()))
                     {
-                        ImGui::Text("# Toys In Box: %d", box->GetToyCount());
+                        ImGui::Text(" Toys (%d):", box->GetToyCount());
+
                         for (const auto& toy : Tbx::BoxView(box))
                         {
-                            if (ImGui::CollapsingHeader(toy.GetName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+                            if (ImGui::TreeNode(toy.GetName().c_str()))
                             {
                                 ImGui::Text("# Blocks On Toy: ??? (TODO)");
+                                ImGui::TreePop();
                             }
                         }
+
+                        ImGui::TreePop();
                     }
                 }
             }
@@ -182,7 +185,7 @@ namespace ImGuiDebugView
         return true;
     }
 
-    void ImGuiDebugViewLayer::OnFrameRendered(const Tbx::RenderedFrameEvent&) const
+    void ImGuiDebugViewLayer::OnFrameRendered(const Tbx::RenderedFrameEvent&)
     {
         if (ImGui::GetDrawData() == nullptr) return;
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
