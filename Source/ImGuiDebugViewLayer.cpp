@@ -147,7 +147,7 @@ namespace ImGuiDebugView
                 ImGui::Text("Mouse Wheel: %.1f", io.MouseWheel);
             }
 
-            if (ImGui::CollapsingHeader("World"))
+            /*if (ImGui::CollapsingHeader("World"))
             {
                 ImGui::Text(" Boxes (%d):", Tbx::World::GetBoxCount());
 
@@ -171,7 +171,7 @@ namespace ImGuiDebugView
                         ImGui::TreePop();
                     }
                 }
-            }
+            }*/
 
             ImGui::End();
         }

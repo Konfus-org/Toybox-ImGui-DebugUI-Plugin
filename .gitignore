@@ -27,7 +27,6 @@
 *.lib
 
 # Executables
-*.exe
 *.out
 *.app
 
@@ -47,8 +46,22 @@ Testing/
 
 # Build
 Build/
+Generated/
 bin/
 obj/
 compileData.scor
 compileData.scor.gbl
 compileData.scor.t0000
+
+# CMake
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+Makefile
+*.tlog
+*.recipe
+*.cmake
+*.pc
