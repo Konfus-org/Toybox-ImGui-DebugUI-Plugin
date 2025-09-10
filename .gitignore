@@ -10,6 +10,7 @@
 # Precompiled Headers
 *.gch
 *.pch
+*.pc
 
 # Compiled Dynamic libraries
 *.so
@@ -64,4 +65,4 @@ Makefile
 *.tlog
 *.recipe
 *.cmake
-*.pc
+*.dir
