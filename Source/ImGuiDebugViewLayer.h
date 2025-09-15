@@ -1,5 +1,5 @@
 #pragma once
-#include <Tbx/PluginAPI/RegisterPlugin.h>
+#include <Tbx/Plugins/IPlugin.h>
 #include <Tbx/Layers/Layer.h>
 #include <Tbx/Events/WindowEvents.h>
 #include <Tbx/Events/RenderEvents.h>
@@ -7,10 +7,10 @@
 
 namespace ImGuiDebugView
 {
-    class ImGuiDebugViewLayer : public Tbx::ILayerPlugin
+    /*class ImGuiDebugViewLayer : public Tbx::ILayerPlugin
     {
     public:
-        ImGuiDebugViewLayer() : ILayerPlugin("ImGui") {}
+        ImGuiDebugViewLayer(const std::weak_ptr<Tbx::App>& app) : ILayerPlugin("ImGui", app) {}
 
         void OnLoad() override;
         void OnUnload() override;
@@ -18,7 +18,6 @@ namespace ImGuiDebugView
         void OnAttach() override;
         void OnDetach() override;
         void OnUpdate() override;
-        bool IsOverlay() override;
 
     private:
         void OnFrameRendered(const Tbx::RenderedFrameEvent& e);
@@ -28,5 +27,5 @@ namespace ImGuiDebugView
         bool _isDebugWindowOpen = false;
     };
 
-    TBX_REGISTER_PLUGIN(ImGuiDebugViewLayer);
+    TBX_REGISTER_PLUGIN(ImGuiDebugViewLayer);*/
 }
