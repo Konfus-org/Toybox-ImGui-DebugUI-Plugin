@@ -1,9 +1,9 @@
 #pragma once
-#include <Tbx/Plugins/IPlugin.h>
+#include <Tbx/Plugins/Plugin.h>
 #include <Tbx/Layers/Layer.h>
 #include <Tbx/Events/WindowEvents.h>
 #include <Tbx/Events/RenderEvents.h>
-#include <Tbx/Ids/UID.h>
+#include <Tbx/Ids/Uid.h>
 
 namespace ImGuiDebugView
 {
