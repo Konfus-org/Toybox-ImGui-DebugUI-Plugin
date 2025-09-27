@@ -11,24 +11,11 @@
 
 namespace ImGuiDebugView
 {
-    //static bool OnSDLEvent(void*, SDL_Event* event)
-    //{
-    //    ImGui_ImplSDL3_ProcessEvent(event); // forwards to ImGui, does NOT consume
-    //    return false;
-    //}
-
-    //void ImGuiDebugViewLayer::OnLoad()
-    //{
-    //    // Setup Dear ImGui context
-    //    IMGUI_CHECKVERSION();
-    //    ImGui::CreateContext();
-    //    ImGuiIO& io = ImGui::GetIO();
-    //}
-
-    //void ImGuiDebugViewLayer::OnUnload()
-    //{
-    //    ImGui::DestroyContext();
-    //}
+    static bool OnSDLEvent(void*, SDL_Event* event)
+    {
+        ImGui_ImplSDL3_ProcessEvent(event); // forwards to ImGui, does NOT consume
+        return false;
+    }
 
     //void ImGuiDebugViewLayer::OnAttach()
     //{

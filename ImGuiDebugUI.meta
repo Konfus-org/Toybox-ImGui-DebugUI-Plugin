@@ -1,15 +1,11 @@
 {
     "name": "ImGui Debug UI",
-    "lib": "ImGuiDebugUI.dll",
-    "dependencies": [
-        "SDL3 Windowing",
-        "OpenGL Rendering"
-    ],
-    "type": [
-        "Debug UI"
-    ],
     "language": "C++",
     "version": "0.0.1",
     "author": "Konfus-dev",
-    "description": "Debug UI for help during development. Shows info like frame time, mouse pos, window size, memory consumption etc..."
+    "description": "Debug UI for help during development. Shows info like frame time, mouse pos, window size, memory consumption etc...",
+    "dependencies": [
+        "SDL3 Windowing",
+        "OpenGL Rendering"
+    ]
 }
