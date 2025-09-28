@@ -5,7 +5,8 @@
 
 namespace ImGuiDebugView
 {
-    void ImGuiDebugViewPlugin::OnLoad()
+    ImGuiDebugViewPlugin::ImGuiDebugViewPlugin(Tbx::WeakRef<Tbx::App> app)
+        : Tbx::Plugin(app)
     {
         // Setup Dear ImGui context
         IMGUI_CHECKVERSION();
@@ -13,10 +14,10 @@ namespace ImGuiDebugView
         ImGuiIO& io = ImGui::GetIO();
 
         // Add our imgui layer
-        _app.lock()->AddLayer<ImGuiDebugViewLayer>();
+        app.lock()->AddLayer<ImGuiDebugViewLayer>();
     }
 
-    void ImGuiDebugViewPlugin::OnUnload()
+    ImGuiDebugViewPlugin::~ImGuiDebugViewPlugin()
     {
         ImGui::DestroyContext();
     }
