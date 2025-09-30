@@ -3,10 +3,10 @@
 
 namespace ImGuiDebugView
 {
-    class ImGuiDebugViewPlugin final : public Tbx::Plugin
+    class ImGuiDebugViewPlugin final : public Tbx::IPlugin
     {
     public:
-        ImGuiDebugViewPlugin(Tbx::WeakRef<Tbx::App> app);
+        ImGuiDebugViewPlugin(Tbx::Ref<Tbx::EventBus> eventBus);
         ~ImGuiDebugViewPlugin() override;
     };
 
