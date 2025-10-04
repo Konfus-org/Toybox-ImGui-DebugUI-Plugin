@@ -3,7 +3,7 @@
 
 namespace ImGuiDebugView
 {
-    class ImGuiDebugViewPlugin final : public Tbx::IPlugin
+    class ImGuiDebugViewPlugin final : public Tbx::Plugin
     {
     public:
         ImGuiDebugViewPlugin(Tbx::Ref<Tbx::EventBus> eventBus);
